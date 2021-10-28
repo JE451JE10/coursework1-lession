@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="lessons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <h1 v-text="sitename"></h1>
+        </header>
+        <div v-for="lesson in lessons">
+            {{lesson.title}}
+        </div>
+                <!-- product information -->
+                <h2 v-text="product.title"></h2>
+                <figure>
+                    <img v-bind:src="product.image" width="100">
+                </figure>
+                <p v-html="product.description"></p>
+                <p>{{product.price}}</p>
+                <!-- 'add to cart' button -->
+
+                <!-- inventory message -->
+
+                <!-- rating -->
+
+
+            </div>
+        </div>
+
+</body>
+<script>
+
+ var webstore = new Vue({
+            el: '#app',
+            data: {
+                sitename: 'Lesson', 
+                product: {
+                    id: 1,
+                    title: "MaEngth",
+                    description: "London",
+                    price: 100,
+                    Stock: 10,
+                    image: "math-icon.jpg"
+                },
+                lessons: lessons,
+            }
+        });
+     
+</script>
+
+</html>
