@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="lessions.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <h1 v-text="sitename"></h1>
+            <button>{{ cartItemCount }}<span class="fas fa-shopping-cart"></span> Checkout</button>
+        </header>
+        <main>
+            <div v-for="lessons in lessons" style="border-style: solid; border-color: blue; width: 150px; margin: 10px;">
+                <figure>
+                    <img v-bind:src="lessons.image" width="100">
+                </figure>
+                <p>Subject: {{lessons.Subject}}</p>
+                </h2>
+                <p>Localtion: {{lessons.Localtion}}</p>
+                </p>
+                <p>Price: {{lessons.price}}</p>
+                <p>Stock: {{lessons.Stock}}</p>
+                <button><span class="fas fa-cart-plus"></span> Add To Cart</button>
+            </div>
+        </main>
+    </div>
+
+
+
+    <script>
+        var webstore = new Vue({
+            el: '#app',
+            data: {
+                sitename: 'Lesson List',
+                lessons: lessons,
+            },
+            cart: []
+
+
+        });
+
+    </script>
+
+</html>
