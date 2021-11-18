@@ -10,7 +10,6 @@
 </head>
 
 <body>
-    <div>
         <div id="app">
 
             <header>
@@ -18,9 +17,12 @@
                     <div>
                         <h1 v-text="sitename"></h1>
                         <button v-on:click='showCheckout'>{{cartItemCount}}<span class="fas fa-shopping-cart"></span>Checkout</button>
+                    </div>
+                </div>
             </header>
             <main>
-                <div v-if="showProduct">     
+                <div v-if="showProduct">
+                    
                     <div>
                         <h1>Sort by</h1>
                         <p>
@@ -40,14 +42,14 @@
                             <label for="Location">Descscending</label>
                         </p>
                     </div>
-                    <div style="display: flex">
-                        <div v-for="lessons in lessons" style="border: 5px solid blue; width: 150px;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                        <div v-for="lessons in lessons" style="border: 5px solid blue; width: 150px; background-color: lightblue">
                             <figure>
                                 <img v-bind:src="lessons.image" width="100px">
                             </figure>
-                            <p>Subject: {{lessons.Subject}}</p>
-                            <p>Localtion: {{lessons.Location}}</p>
-                            <p>Price: {{lessons.price}}</p>
+                            <p><b>Subject: {{lessons.Subject}}</b></p>
+                            <p><strong>Location: {{lessons.Location}}</strong></p>
+                            <p><b>Price: {{lessons.price}}</b></p>
                             <button v-on:click="addToCart(lessons)" :disabled="!canAddToCart(lessons)"><span class="fas fa-cart-plus">
                                 </span>Add to Cart</button>
                             <span v-if="lessons.Space - cartCount(lessons) === 0">All Out!</span>
@@ -58,17 +60,17 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div style="display: flex">
-                    <div v-for="lessons in cart" style="border: 5px solid blue; width: 150px;">
-                        <figure>
-                            <img v-bind:src="lessons.image" width="100px">
-                        </figure>
-                        <p>Subject: {{lessons.Subject}}</p>
-                        <p>Localtion: {{lessons.Location}}</p>
-                        <p>Price: {{lessons.price}}</p>
-                        <button @click="del(cart)"><span class="fas fa-cart-arrow-down"></span>Delete</button>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                        <div v-for="lessons in cart" style="border: 5px solid blue; width: 150px; background-color: lightblue">
+                            <figure>
+                                <img v-bind:src="lessons.image" width="100px">
+                            </figure>
+                            <p><b>Subject: {{lessons.Subject}}</b></p>
+                            <p><strong>Location: {{lessons.Location}}</strong></p>
+                            <p><b>Price: {{lessons.price}}</b></p>
+                            <button @click="del(cart)"><span class="fas fa-cart-arrow-down"></span>Delete</button>
+                        </div>
                     </div>
-                </div>
 
                     <h1>Checkout</h1>
                     <p><strong>First Name:</strong>
@@ -83,66 +85,69 @@
                 </div>
 
             </main>
-        </div>
-        <script>
-            var app = new Vue({
-                el: '#app',
-                data: {
-                    sitename: "Lessons",
-                    showProduct: true,
-                    order: {
-                        Name: '',
-                        Phonenumber: '',
-                    },
-                    lessons: lessons,
-                    cart: []
-                },
 
-                methods: {
-                    addToCart(lessons) {
-                        this.cart.push(lessons);
-
-                    },
-                    showCheckout() {
-                        this.showProduct = this.showProduct ? false : true;
+            <script>
+                var app = new Vue({
+                    el: '#app',
+                    data: {
+                        sitename: "After School Lessons",
+                        showProduct: true,
+                        order: {
+                            Name: '',
+                            Phonenumber: '',
+                        },
+                        lessons: lessons,
+                        cart: []
                     },
 
-                    canAddToCart(lessons) {
-                        return lessons.Space > this.cartCount(lessons);
-                    },
-                    cartCount(id) {
-                        let count = 0;
-                        for (let i = 0; i < this.cart.length; i++) {
-                            if (this.cart[i] === id) {
-                                count++;
+                    methods: {
+                        addToCart(lessons) {
+                            this.cart.push(lessons);
+
+                        },
+                        showCheckout() {
+                            this.showProduct = this.showProduct ? false : true;
+                        },
+
+                        canAddToCart(lessons) {
+                            return lessons.Space > this.cartCount(lessons);
+                        },
+                        cartCount(id) {
+                            let count = 0;
+                            for (let i = 0; i < this.cart.length; i++) {
+                                if (this.cart[i] === id) {
+                                    count++;
+                                }
+                            }
+                            return count;
+                        },
+                        submit() {
+                            if (this.order.Name && this.order.Phonenumber) {
+                                alert("order submited")
+                            }
+                            else {
+                                alert("order required")
+                            }
+                        },
+                        del(cart) {
+                            this.cart.splice(cart, 1)
+                        },
+                        sortTable(key, direction) {
+                            this.sort = `${key} > ${direction}`
+                            if (direction === 'asc') {
+                                this.lessons.sort((a, b) => a[key] > b[key] ? 1 : -1)
+                            } else {
+                                this.lessons.sort((a, b) => a[key] < b[key] ? 1 : -1)
                             }
                         }
-                        return count;
                     },
-                    submit() {
-                        if (this.order.Name && this.order.Phonenumber) {
-                            alert("order submited")
-                        }
-                    },
-                    del(cart) {
-                        this.cart.splice(cart, 1)
-                    },
-                    sortTable(key, direction) {
-                        this.sort = `${key} > ${direction}`
-                        if (direction === 'asc') {
-                            this.lessons.sort((a, b) => a[key] > b[key] ? 1 : -1)
-                        } else {
-                            this.lessons.sort((a, b) => a[key] < b[key] ? 1 : -1)
-                        }
+                    computed: {
+                        cartItemCount() {
+                            return this.cart.length || '';
+                        },
                     }
-                },
-                computed: {
-                    cartItemCount() {
-                        return this.cart.length || '';
-                    },
-                }
-            });
-        </script>
+                });
+            </script>
 </body>
 
 </html>
